@@ -1,0 +1,55 @@
+.progress-circle{
+    width: 75px;
+    height: 75px;
+    background-color: #f1f3f9;
+}
+.progress-stick{
+    height: 12px;
+    margin-top: 45%;
+    margin-left: 2px;
+    width: 245%;
+    background-color: #f1f3f9;
+}
+.progress-box{
+    margin-bottom: 10%;
+}
+.sign-box{
+    margin-top: 10%;
+    -webkit-box-shadow: 0px 0px 64px 44px rgb(241 243 249);
+    -moz-box-shadow: 0px 0px 64px 44px rgba(241,243,249,1);
+    box-shadow: 0px 0px 64px 44px rgb(194, 194, 196);
+    padding: 2%;
+    border-radius: 10px;
+}
+/*#Signup{
+    margin-top: 10%;
+    -webkit-box-shadow: 0px 0px 64px 44px rgb(241 243 249);
+    -moz-box-shadow: 0px 0px 64px 44px rgba(241,243,249,1);
+    box-shadow: 0px 0px 64px 44px rgb(241 243 249);
+    padding: 2%;
+    border-radius: 10px;
+}*/
+.progress-icon{
+    font-size: 35px;
+    margin: 25%;
+    z-index: 2;
+    color: white;
+}
+.step1{
+    background-color: #7de8e8;
+}
+.proximo{
+    margin-left: 72%;
+}
+.dsp-none{
+    display: none;
+}
+.dsp-flex{
+    display: flex;
+}
+.title-person-1{
+    margin-top: 5%;
+    color: #7d88e8;
+    font-size: 32px;
+    font-weight: bold;
+}
