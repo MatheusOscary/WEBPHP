@@ -3,7 +3,7 @@
 namespace bll;
 use dal\dalUsuario;
 
-include_once "../dal/dalUsuario.php";
+include_once "../../dal/dalUsuario.php";
 
 class bllUsuario{
     public function Insert(\model\Usuario $usuario){

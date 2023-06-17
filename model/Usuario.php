@@ -10,28 +10,28 @@ class Usuario {
 
 
     public function getId(){
-        return $id;
+        return $this->id;
     }
     public function getUser(){
-        return $user;
+        return $this->user;
     }
     public function getPassword(){
-        return $password;
+        return $this->password;
     }
     public function getEmail(){
-        return $email;
+        return $this->email;
     }
 
     public function setId(int $id){
         $this->id = $id; 
     }
-    public function setUser(int $user){
+    public function setUser(string $user){
         $this->user = $user; 
     }
-    public function setPassword(int $password){
+    public function setPassword(string $password){
         $this->password = $password; 
     }
-    public function setEmail(int $email){
+    public function setEmail(string $email){
         $this->email = $email; 
     }
 }
