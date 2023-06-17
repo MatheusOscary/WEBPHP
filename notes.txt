@@ -1,0 +1,20 @@
+====== USUARIO ======
+    Registrar
+    Logar
+    *Atualizar
+=====================
+
+====== CLIENTE ======
+    Cadastrar
+    Atualizar
+=====================
+
+====== PRODUTO ======
+    Cadastrar
+    Atualizar
+=====================
+
+======== PDV ========
+    Venda
+    Finalizar
+=====================
