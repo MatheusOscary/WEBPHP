@@ -10,6 +10,15 @@ $usuario->setPassword($_POST['Pass']);
 $usuario->setEmail($_POST['Email']);
 
 $bllUsuario = new \bll\bllUsuario;
-$bllUsuario->Insert($usuario);
+
+$data = array();
+
+$data = $bllUsuario->Insert($usuario);
+
+$json = json_encode($data);
+
+header('Content-Type: application/json');
+
+echo $json;
 
 ?>

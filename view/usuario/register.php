@@ -13,6 +13,40 @@
         }
     </style>
     <title>Registrar</title>
+    <script>
+        
+        jQuery(function($){
+            $('#pronto').click(function(){
+
+                $.ajax({
+                    method : 'POST',
+                    url : 'register_script.php',
+                    data : $('#Registrar').serialize(),
+                    success : function(data){
+                        var statusCode = data.STATUS_CODE;
+                        var message = data.MESSAGE;
+                        if (statusCode == 200){
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }else{
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }
+                        console.log(statusCode);
+                        console.log(message);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container dsp-flex justify-content-center">
@@ -35,7 +69,7 @@
                 <input type="email" class="form-control" name="Email" id="Email">
             </div>
             <div class="botoes dsp-flex justify-content-end col-md-12">
-                <button type="submit" class="btn btn-large btn-primary" align="right">Pronto <i class="fa-solid fa-forward fa-beat"></i></button>
+                <a id="pronto" class="btn btn-large btn-primary" align="right">Pronto <i class="fa-solid fa-forward fa-beat"></i></a>
             </div>
         </form>
     </div>
