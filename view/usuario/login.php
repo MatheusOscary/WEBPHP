@@ -17,8 +17,34 @@
         
         jQuery(function($){
             $('#entrar').click(function(){
-
-                
+                $.ajax({
+                    method : 'POST',
+                    url : 'login_script.php',
+                    data : $('#Registrar').serialize(),
+                    success : function(data){
+                        var statusCode = data.STATUS_CODE;
+                        var message = data.MESSAGE;
+                        var token = data.ENTROU;
+                        if (statusCode == 200){
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }else{
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }
+                        console.log(statusCode);
+                        console.log(message);
+                        console.log(token);
+                    }
+                });
             });
         });
     </script>

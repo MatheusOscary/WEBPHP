@@ -32,6 +32,38 @@ class dalUsuario{
 
         return array('STATUS_CODE' => $status_code, 'MESSAGE' => $message);
     }
+
+    public function Login(\model\Usuario $usuario) {
+        $con = \dal\Conexao::conectar();
+        $p_Username = $usuario->getUser();
+        $p_Password = $usuario->getPassword();
+        
+        $sql = "CALL Login(:username, :password, @p_Token, @p_UserId, @p_STATUS_CODE, @p_MESSAGE);";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindParam(':username', $p_Username);
+        $stmt->bindParam(':password', $p_Password);
+
+        $stmt->execute();
+
+        $result = $con->query("SELECT @p_Token, @p_UserId, @p_STATUS_CODE, @p_MESSAGE");
+        $row = $result->fetch(\PDO::FETCH_ASSOC);
+        $status_code = $row['@p_STATUS_CODE'];
+        $message = $row['@p_MESSAGE'];
+        $teste = "";
+        session_start();
+        if($status_code == 200){
+            $token = bin2hex($row['@p_Token']);
+            $_SESSION['Token'] = $token;
+            $_SESSION['UserId'] = $row['@p_UserId'];
+            $teste = $_SESSION['Token'];
+        };
+
+        \dal\Conexao::desconectar();
+
+        return array('STATUS_CODE' => $status_code, 'MESSAGE' => $message, 'ENTROU' => $teste);
+    }
 }
 
 ?>

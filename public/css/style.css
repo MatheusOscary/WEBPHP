@@ -11,7 +11,7 @@
     background-color: #f1f3f9;
 }
 .progress-box{
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 }
 .sign-box{
     margin-top: 10%;
@@ -52,4 +52,20 @@
     color: #7d88e8;
     font-size: 32px;
     font-weight: bold;
+}
+
+.title-person-2{
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.botoes{
+    margin-top: 5%;
+}
+
+.shadow{
+    -webkit-box-shadow: 0px 0px 64px 44px rgb(241 243 249);
+    -moz-box-shadow: 0px 0px 64px 44px rgba(241,243,249,1);
+    box-shadow: 0px 0px 64px 44px rgb(194, 194, 196);
 }

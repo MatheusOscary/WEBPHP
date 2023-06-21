@@ -5,6 +5,11 @@
     <title>SimpleSYS</title>
 </head>
 <body>
-    Teste
+    <?php
+        session_start();
+        echo $_SESSION["Token"];
+        echo "<br>";
+        echo $_SESSION["UserId"];
+    ?>
 </body>
 </html>

@@ -1,7 +1,6 @@
 ====== USUARIO ======
-    Registrar
-    Logar
-    *Atualizar
+    Registrar //Feito
+    Logar //Feito
 =====================
 
 ====== CLIENTE ======
