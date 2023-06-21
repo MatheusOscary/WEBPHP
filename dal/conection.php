@@ -4,7 +4,7 @@
 use PDO;
 
 class Conexao{
-    private static $dbName='mofs'; 
+    private static $dbName='mpg'; 
     private static $dbHost = 'localhost';
     private static $dbUser = 'root'; 
     private static $dbPassword = '';  
