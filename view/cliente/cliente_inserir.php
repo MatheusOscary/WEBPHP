@@ -13,10 +13,44 @@
         }
     </style>
     <title>Cadastrar Cliente</title>
+	<script>
+        
+        jQuery(function($){
+            $('#cadastrar').click(function(){
+
+                $.ajax({
+                    method : 'POST',
+                    url : 'cliente_inserir_script.php',
+                    data : $('#Cadastrar_cliente').serialize(),
+                    success : function(data){
+                        var statusCode = data.STATUS_CODE;
+                        var message = data.MESSAGE;
+                        if (statusCode == 200){
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }else{
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }
+                        console.log(statusCode);
+                        console.log(message);
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="dsp-flex justify-content-center">
-        <form action="register_script.php" class="col-md-12" id="Registrar" method="post">
+        <form action="" class="col-md-12" id="Cadastrar_cliente" method="post">
             <div class="container shadow pb-2">
             <div class="col-md-12 container dsp-flex justify-content-between position-relative progress-box bg-dark rounded mt-2">
                 <div class="col-md-12 title-person-2" align="center">
@@ -25,8 +59,8 @@
             </div>
 			<!-- CNPJ -->
 			<div class="col-md-8 container dsp-flex flex-column justify-content-center">
-				<label for="CNPJ_CPF" class="form-label">CNPJ/CPF</label>
-				<input type="text" class="form-control" name="CNPJ_CPF" id="CNPJ_CPF">
+				<label for="CPF_CNPJ" class="form-label">CNPJ/CPF</label>
+				<input type="text" class="form-control" name="CPF_CNPJ" id="CPF_CNPJ">
 			</div>
 			<br>
             <!-- RG-->

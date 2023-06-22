@@ -4,30 +4,32 @@ namespace dal;
 
 include_once "conection.php";
 include_once "../../model/Cliente.php";
-
+session_start();
 class dalCliente{
     public function Insert(\model\Cliente $cliente) {
         $con = \dal\Conexao::conectar();
 
-        $CPF_CNPJ = $cliente.getCPF_CNPJ();
-        $RG_IE = $cliente.getRG_IE();
-        $Tipo_pessoa = $cliente.getTipo_pessoa();
-        $Data_nascimento = $cliente.getData_nascimento();
-        $Sexo = $cliente.getSexo();
+        $CPF_CNPJ = $cliente->getCPF_CNPJ();
+        $RG_IE = $cliente->getRG_IE();
+        $Tipo_pessoa = $cliente->getTipo_pessoa();
+        $Data_nascimento = $cliente->getData_nascimento();
+        $Sexo = $cliente->getSexo();
 
         $sql = "CALL InsertConsumer(:CPF_CNPJ, :RG_IE, :Tipo_pessoa, :Data_nascimento, :Sexo, :Insert_session, :UserId, @p_STATUS_CODE, @p_MESSAGE);";
         
         $stmt = $con->prepare($sql);
-
+        $token = HEX2BIN($_SESSION["Token"]);
         $stmt->bindParam(':CPF_CNPJ',$CPF_CNPJ);
         $stmt->bindParam(':RG_IE',$RG_IE);
         $stmt->bindParam(':Tipo_pessoa',$Tipo_pessoa);
-        $stmt->bindParam(':Data_nascimento ',$Data_nascimento );
+        $stmt->bindParam(':Data_nascimento',$Data_nascimento);
         $stmt->bindParam(':Sexo',$Sexo);
-        $stmt->bindParam(':Insert_session', HEX2BIN($_SESSION['Token']));
+        $stmt->bindParam(':Insert_session', $token);
         $stmt->bindParam(':UserId', $_SESSION['UserId']);
 
         $stmt->execute();
+
+        $stmt->closeCursor();
 
         $result = $con->query("SELECT @p_STATUS_CODE, @p_MESSAGE");
         $row = $result->fetch(\PDO::FETCH_ASSOC);
@@ -42,11 +44,11 @@ class dalCliente{
     public function Update(\model\Cliente $cliente) {
         $con = \dal\Conexao::conectar();
         
-        $id = $cliente.getId();
-        $RG_IE = $cliente.getRG_IE();
-        $Tipo_pessoa = $cliente.getTipo_pessoa();
-        $Data_nascimento = $cliente.getData_nascimento();
-        $Sexo = $cliente.getSexo();
+        $id = $cliente->getId();
+        $RG_IE = $cliente->getRG_IE();
+        $Tipo_pessoa = $cliente->getTipo_pessoa();
+        $Data_nascimento = $cliente->getData_nascimento();
+        $Sexo = $cliente->getSexo();
 
         $sql = "UPDATE mpgConsumer SET RG_IE = '". $RG_IE ."', Tipo_pessoa = '". $Tipo_pessoa ."', Data_nascimento = '". $Data_nascimento ."', Sexo = '". $Sexo ."' WHERE ConsumerId = ". $id .";";
 
