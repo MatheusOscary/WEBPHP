@@ -23,16 +23,16 @@
                     CADASTRAR CLIENTE
                 </div>
             </div>
+			<!-- CNPJ -->
+			<div class="col-md-8 container dsp-flex flex-column justify-content-center">
+				<label for="CNPJ_CPF" class="form-label">CNPJ/CPF</label>
+				<input type="text" class="form-control" name="CNPJ_CPF" id="CNPJ_CPF">
+			</div>
+			<br>
             <!-- RG-->
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="RG_IE" class="form-label">RG/IE</label>
                 <input type="text" class="form-control" name="RG_IE" id="RG_IE">
-            </div>
-			<br>
-            <!-- CNPJ -->
-            <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="CNPJ_CPF" class="form-label">CNPJ/CPF</label>
-                <input type="text" class="form-control" name="CNPJ_CPF" id="CNPJ_CPF">
             </div>
 			<br>
             <!-- TIPO PESSOA -->
