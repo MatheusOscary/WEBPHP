@@ -21,3 +21,6 @@
 FRONT
     Cadastro Cliente | Validação de dados
     Listagem de Clientes | Fazer uma table com colunas id, nome, cpf/cpnj
+
+    Cadastro Produto | Validação de dados
+    Listagem de Produto 
