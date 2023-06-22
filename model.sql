@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22/06/2023 às 00:02
+-- Tempo de geração: 23/06/2023 às 01:15
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -25,6 +25,22 @@ DELIMITER $$
 --
 -- Procedimentos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertConsumer` (IN `p_CPF_CNPJ` VARCHAR(14), IN `p_RG_IE` VARCHAR(14), IN `p_Tipo_pessoa` CHAR(1), IN `p_Data_nascimento` DATE, IN `p_Sexo` CHAR(1), IN `p_Insert_session` VARBINARY(128), IN `p_UserId` BIGINT, OUT `p_STATUS_CODE` BIGINT, OUT `p_MESSAGE` VARCHAR(255))   InsertConsumer:BEGIN
+	IF EXISTS(SELECT CPF_CNPJ FROM mpgconsumer WHERE CPF_CNPJ = p_CPF_CNPJ) THEN
+    	SET p_STATUS_CODE = 409;
+        IF (p_Tipo_pessoa = "F") THEN
+        	SET p_MESSAGE = "Já existe uma pessoa cadastrada com esse CPF!";
+       	ELSE
+        	SET p_MESSAGE = "Já existe uma pessoa cadastrada com esse CNPJ!";
+        END IF;
+        LEAVE InsertConsumer;
+    END IF;
+    INSERT INTO mpgconsumer(CPF_CNPJ, RG_IE, Tipo_pessoa, Data_nascimento, Sexo, Insert_session, UserId)
+	VALUES(p_CPF_CNPJ, p_RG_IE, p_Tipo_pessoa, p_Data_nascimento, p_Sexo, p_Insert_session, p_UserId); 
+    SET p_STATUS_CODE = 200;
+    SET p_MESSAGE = "Consumidor cadastrado com sucesso!";
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertUser` (IN `p_Username` VARCHAR(32), IN `p_Password` VARCHAR(32), IN `p_Email` VARCHAR(60), OUT `p_STATUS_CODE` INT, OUT `p_MESSAGE` VARCHAR(255))   InsertUser:BEGIN
 	IF (EXISTS(SELECT `User`.Username FROM mpguser AS `User` WHERE `User`.Username = p_Username)) THEN
         SET p_STATUS_CODE = 409;
@@ -69,6 +85,33 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Estrutura para tabela `mpgconsumer`
+--
+
+CREATE TABLE `mpgconsumer` (
+  `ConsumerId` bigint(20) NOT NULL,
+  `UserId` bigint(20) DEFAULT NULL,
+  `CPF_CNPJ` varchar(14) NOT NULL,
+  `RG_IE` varchar(14) NOT NULL,
+  `Tipo_pessoa` char(1) NOT NULL CHECK (`Tipo_pessoa` in ('J','F')),
+  `Data_nascimento` date NOT NULL,
+  `Sexo` char(1) NOT NULL CHECK (`Sexo` in ('M','F','I','MNTC')),
+  `Insert_date` datetime NOT NULL,
+  `Insert_session` varbinary(128) NOT NULL,
+  `Update_date` datetime DEFAULT NULL,
+  `Update_session` varbinary(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `mpgconsumer`
+--
+
+INSERT INTO `mpgconsumer` (`ConsumerId`, `UserId`, `CPF_CNPJ`, `RG_IE`, `Tipo_pessoa`, `Data_nascimento`, `Sexo`, `Insert_date`, `Insert_session`, `Update_date`, `Update_session`) VALUES
+(1, 1, '4293172828', '442522115245', 'F', '2003-07-07', 'M', '0000-00-00 00:00:00', 0x95aeea7636105d59ef3b00d123d2625d245a3f79817d99806d97371dd159a034, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para tabela `mpglogin`
 --
 
@@ -96,6 +139,7 @@ INSERT INTO `mpglogin` (`Token`, `UserId`, `Login_date`) VALUES
 (0x35e83ec3f74e5bfe73611acd2b07ab39b59eaaeac0e55c393f4c0daca19124ec, 1, '2023-06-18 11:28:12'),
 (0x72b91d7446dffd03dfd61cda84837524245a3f79817d99806d97371dd159a034, 1, '2023-06-18 11:52:44'),
 (0x72b91d7446dffd03dfd61cda84837524eff607ed79bc449dccbf574f0df1d42e, 1, '2023-06-18 11:55:08'),
+(0x95aeea7636105d59ef3b00d123d2625d245a3f79817d99806d97371dd159a034, 1, '2023-06-22 20:02:44'),
 (0xa433e69da21f3c1e560a0aafd164a14e114b6f07264876947105da34696982a7, 1, '2023-06-18 11:34:30'),
 (0xa433e69da21f3c1e560a0aafd164a14e3b15d4efdf35ff30bab2c2c85d09d3af, 1, '2023-06-18 11:32:24'),
 (0xa433e69da21f3c1e560a0aafd164a14e4fbb2a6812e5c68ca28fa0b0d97fe9cf, 1, '2023-06-18 11:33:16'),
@@ -135,6 +179,14 @@ INSERT INTO `mpguser` (`UserId`, `Username`, `Password`, `Email`, `Insert_date`,
 --
 
 --
+-- Índices de tabela `mpgconsumer`
+--
+ALTER TABLE `mpgconsumer`
+  ADD PRIMARY KEY (`ConsumerId`),
+  ADD UNIQUE KEY `CPF_CNPJ_un` (`CPF_CNPJ`),
+  ADD KEY `UserId_fk` (`UserId`);
+
+--
 -- Índices de tabela `mpglogin`
 --
 ALTER TABLE `mpglogin`
@@ -154,6 +206,12 @@ ALTER TABLE `mpguser`
 --
 
 --
+-- AUTO_INCREMENT de tabela `mpgconsumer`
+--
+ALTER TABLE `mpgconsumer`
+  MODIFY `ConsumerId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de tabela `mpguser`
 --
 ALTER TABLE `mpguser`
@@ -162,6 +220,12 @@ ALTER TABLE `mpguser`
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `mpgconsumer`
+--
+ALTER TABLE `mpgconsumer`
+  ADD CONSTRAINT `UserId_fk` FOREIGN KEY (`UserId`) REFERENCES `mpguser` (`UserId`);
 
 --
 -- Restrições para tabelas `mpglogin`
