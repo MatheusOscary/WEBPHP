@@ -18,4 +18,23 @@
     Finalizar
 =====================
 
-Atualizar
+FRONT
+    Cadastro Cliente | Validação de dados
+    Listagem de Clientes | Fazer uma table com colunas id, nome, cpf/cpnj
+
+    Cadastro Produto | Validação de dados
+        Nome
+        Preco Venda
+        Preco Compra
+        codigo de barra
+        Estoque
+        Categoria SELECT HTML
+
+    Listagem de Produto 
+        ID
+        Nome
+        Preco Venda
+        Preco Compra
+        codigo de barra
+        Estoque
+
