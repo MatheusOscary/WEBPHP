@@ -74,7 +74,7 @@
             	<label class="form-label">Selecione seu tipo pessoa</label>
             		<div class="form-check">
 						<label class="form-check-label" for="Tipo_pessoa1">
-							Juridica 
+							Jurídica 
 						</label>
   						<input class="form-check-input" type="radio" value="J" name="Tipo_pessoa" id="Tipo_pessoa1">
 					</div>
