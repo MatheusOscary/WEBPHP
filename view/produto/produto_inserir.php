@@ -23,40 +23,36 @@
                     CADASTRAR PRODUTO
                 </div>
             </div>
-            <!-- ID-->
-            <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="User" class="form-label">ID</label>
-                <input type="text" class="form-control" name="User" id="User">
-            </div>
             <!-- NOME -->
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="Pass" class="form-label">NOME</label>
-                <input type="text" class="form-control" name="Pass" id="Pass">
+                <label for="Nome" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="Nome" id="Nome">
             </div>
             <!-- VALOR VENDA -->
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="Pass" class="form-label">VALOR VENDA</label>
-                <input type="text" class="form-control" name="Pass" id="Pass" placeholder="R$">
+                <label for="Valor_venda" class="form-label">Valor venda</label>
+                <input type="number" step="any" class="form-control" name="Valor_venda" id="Valor_venda" placeholder="R$">
             </div>
                <!-- VALOR COMPRA -->
                <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="Pass" class="form-label">VALOR COMPRA</label>
-                <input type="text" class="form-control" name="Pass" id="Pass" placeholder="R$">
+                <label for="Valor_compra" class="form-label">Valor compra</label>
+                <input type="number" step="any" class="form-control" name="Valor_compra" id="Valor_compra" placeholder="R$">
             </div>
               <!-- CODIGO DE BARRA -->
               <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="Pass" class="form-label">Código de Barras/label>
-                <input type="text" class="form-control" name="Pass" id="Pass" placeholder="00000000000">
+                <label for="Cod_barra" class="form-label">Código de Barras</label>
+                <input type="text" class="form-control" name="Cod_barra" id="Cod_barra" placeholder="00000000000">
             </div>
               <!-- ESTOQUE -->
               <div class="col-md-8 container dsp-flex flex-column justify-content-center">
-                <label for="Pass" class="form-label">QUANTAS UNIDADES EM ESTOQUE</label>
-                <input type="text" class="form-control" name="Pass" id="Pass" >
+                <label for="Estoque" class="form-label">Estoque</label>
+                <input type="number" class="form-control" name="Estoque" id="Estoque" >
             </div>
 
 
             <div class="botoes dsp-flex justify-content-end col-md-11">
-                <a id="cadastrar" class="btn btn-large btn-dark" align="right"><i class="fa-sharp fa-solid fa-plus fa-fade"></i> Cadastrar produto</a>
+                <!--<a id="cadastrar" class="btn btn-large btn-dark" align="right"><i class="fa-sharp fa-solid fa-plus fa-fade"></i> Cadastrar produto</a>-->
+                    <button type="submit"id="cadastrar" class="btn btn-large btn-dark" align="right"><i class="fa-sharp fa-solid fa-plus fa-fade"></i> Cadastrar produto></button>
             </div>
             
             </div>
