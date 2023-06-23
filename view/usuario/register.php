@@ -64,18 +64,24 @@
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="User" class="form-label">Nome de usuário</label>
-                <input type="text" class="form-control" name="User" id="User" required>
+                <input type="text" class="form-control" name="User" id="User"  maxlength="32" required>
                 <div class="invalid-feedback">
                     Nome de usuário não pode estar vazio.
                 </div>
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="Pass" class="form-label">Senha</label>
-                <input type="password" class="form-control" name="Pass" id="Pass">
+                <input type="password" class="form-control" name="Pass" id="Pass" minlength="8" maxlength="32" required>
+                <div class="invalid-feedback">
+                   Senha precisa ter mais de 8 caracteres.
+                </div>
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="Email" class="form-label">E-mail</label>
-                <input type="email" class="form-control" name="Email" id="Email">
+                <input type="email" class="form-control" name="Email" id="Email" maxlength="60" required>
+                <div class="invalid-feedback">
+                   Email inválido.
+                </div>
             </div>
             <div class="botoes dsp-flex justify-content-end col-md-12">
                 <a id="pronto" class="btn btn-large btn-primary" align="right">Pronto <i class="fa-solid fa-forward fa-beat"></i></a>
