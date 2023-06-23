@@ -17,7 +17,10 @@
         
         jQuery(function($){
             $('#cadastrar').click(function(){
+            event.preventDefault(); // Impede o comportamento padrão do botão de enviar
 
+            var form = $('#Cadastrar_cliente')[0];
+            if (form.checkValidity()) {
                 $.ajax({
                     method : 'POST',
                     url : 'cliente_inserir_script.php',
@@ -44,13 +47,17 @@
                         console.log(message);
                     }
                 });
+            } else {
+            form.classList.add('was-validated'); // Adiciona a classe was-validated para exibir os feedbacks de validação
+        }
             });
+        
         });
     </script>
 </head>
 <body>
     <div class="dsp-flex justify-content-center">
-        <form action="" class="col-md-12" id="Cadastrar_cliente" method="post">
+        <form action="" class="col-md-12 needs-validation" id="Cadastrar_cliente" method="post" novalidate>
             <div class="container shadow pb-2">
             <div class="col-md-12 container dsp-flex justify-content-between position-relative progress-box bg-dark rounded mt-2">
                 <div class="col-md-12 title-person-2" align="center">
@@ -60,18 +67,27 @@
 			<!-- CNPJ -->
 			<div class="col-md-8 container dsp-flex flex-column justify-content-center">
 				<label for="CPF_CNPJ" class="form-label">CNPJ/CPF</label>
-				<input type="text" class="form-control" name="CPF_CNPJ" id="CPF_CNPJ">
+				<input type="text" class="form-control" name="CPF_CNPJ" id="CPF_CNPJ" minlength="11" maxlength="14"  required>
+                <div class="invalid-feedback">
+                    CPF/CNPJ inválido.
+                </div>
 			</div>
 			<br>
             <!-- RG-->
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="RG_IE" class="form-label">RG/IE</label>
-                <input type="text" class="form-control" name="RG_IE" id="RG_IE">
+                <input type="text" class="form-control" name="RG_IE" id="RG_IE" maxlength="14" required>
+                <div class="invalid-feedback">
+                    RG/IE inválido.
+                </div>
             </div>
 			<br>
 			<div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="Nome" class="form-label">Nome</label>
-                <input type="text" class="form-control" name="Nome" id="Nome">
+                <input type="text" class="form-control" name="Nome" id="Nome" maxlength="120" required>
+                <div class="invalid-feedback">
+                    Nome não pode estar vazio.
+                </div>
             </div>
 			<br>
             <!-- TIPO PESSOA -->
@@ -124,7 +140,7 @@
 				<!-- DATA -->
 				<div class="col-md-8 container dsp-flex flex-column justify-content-center">
 					<label for="Data_nascimento" class="form-label">Data</label>
-					<input type="date" class="form-control" name="Data_nascimento" id="Data_nascimento" placeholder="DD/MM/AAAA">
+					<input type="date" class="form-control" name="Data_nascimento" id="Data_nascimento" placeholder="DD/MM/AAAA" required>
 				</div>
 				<br>
 				<div class="botoes dsp-flex justify-content-end col-md-11">
