@@ -16,41 +16,47 @@
     <script>
         
         jQuery(function($){
-            $('#pronto').click(function(){
+    $('#pronto').click(function(event){
+        event.preventDefault(); // Impede o comportamento padrão do botão de enviar
 
-                $.ajax({
-                    method : 'POST',
-                    url : 'register_script.php',
-                    data : $('#Registrar').serialize(),
-                    success : function(data){
-                        var statusCode = data.STATUS_CODE;
-                        var message = data.MESSAGE;
-                        if (statusCode == 200){
-                            Swal.fire({
-                                title: 'Sucesso!',
-                                text: message,
-                                icon: 'success',
-                                confirmButtonText: 'Confirmar'
-                            })
-                        }else{
-                            Swal.fire({
-                                title: 'Erro!',
-                                text: message,
-                                icon: 'error',
-                                confirmButtonText: 'Confirmar'
-                            })
-                        }
-                        console.log(statusCode);
-                        console.log(message);
+        var form = $('#Registrar')[0];
+        if (form.checkValidity()) {
+            $.ajax({
+                method : 'POST',
+                url : 'register_script.php',
+                data : $('#Registrar').serialize(),
+                success : function(data){
+                    var statusCode = data.STATUS_CODE;
+                    var message = data.MESSAGE;
+                    if (statusCode == 200){
+                        Swal.fire({
+                            title: 'Sucesso!',
+                            text: message,
+                            icon: 'success',
+                            confirmButtonText: 'Confirmar'
+                        })
+                    }else{
+                        Swal.fire({
+                            title: 'Erro!',
+                            text: message,
+                            icon: 'error',
+                            confirmButtonText: 'Confirmar'
+                        })
                     }
-                });
+                    console.log(statusCode);
+                    console.log(message);
+                }
             });
-        });
+        } else {
+            form.classList.add('was-validated'); // Adiciona a classe was-validated para exibir os feedbacks de validação
+        }
+    });
+});
     </script>
 </head>
 <body>
     <div class="container dsp-flex justify-content-center">
-        <form action="register_script.php" class="col-md-6 sign-box" id="Registrar" method="post">
+        <form action="register_script.php" class="col-md-6 sign-box needs-validation" id="Registrar" method="post" novalidate>
             <div class="col-md-12 container dsp-flex justify-content-between position-relative progress-box">
                 <div class="col-md-8 title-person-1">
                     REGISTRAR
@@ -58,7 +64,10 @@
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="User" class="form-label">Nome de usuário</label>
-                <input type="text" class="form-control" name="User" id="User">
+                <input type="text" class="form-control" name="User" id="User" required>
+                <div class="invalid-feedback">
+                    Nome de usuário não pode estar vazio.
+                </div>
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="Pass" class="form-label">Senha</label>
