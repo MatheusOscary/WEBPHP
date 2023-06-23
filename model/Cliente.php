@@ -5,6 +5,7 @@ namespace model;
 class Cliente {
     private ?int $id;
     private ?string $CPF_CNPJ;
+    private ?string $Nome;
     private ?string $RG_IE;
     private ?string $Tipo_pessoa;
     private ?string $Data_nascimento ;
@@ -12,6 +13,9 @@ class Cliente {
 
     public function getId(){
         return $this->id;
+    }
+    public function getNome(){
+        return $this->Nome;
     }
     public function getCPF_CNPJ(){
         return $this->CPF_CNPJ;
@@ -31,6 +35,9 @@ class Cliente {
 
     public function setId(int $id){
         $this->id = $id; 
+    }
+    public function setNome(string $Nome){
+        $this->Nome = $Nome; 
     }
     public function setCPF_CNPJ(string $CPF_CNPJ){
         $this->CPF_CNPJ = $CPF_CNPJ; 

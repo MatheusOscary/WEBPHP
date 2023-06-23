@@ -24,6 +24,12 @@ class bllCliente{
         $result[] = $dal->Select();
         return $result;
     }
+
+    public function SelectConsumer($cliente){
+        $dal = new \dal\dalCliente;
+        $result = $dal->SelectConsumer($cliente);
+        return $result;
+    }
 }
 
 ?>

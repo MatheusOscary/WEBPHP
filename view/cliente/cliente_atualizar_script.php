@@ -6,7 +6,7 @@ include_once "../../bll/bllCliente.php";
 $cliente = new \model\Cliente;
 
 $cliente->setNome($_POST['Nome']);
-$cliente->setCPF_CNPJ($_POST['CPF_CNPJ']);
+$cliente->setId($_POST['ConsumerId']);
 $cliente->setRG_IE($_POST['RG_IE']);
 $cliente->setTipo_pessoa($_POST['Tipo_pessoa']);
 $cliente->setData_nascimento ($_POST['Data_nascimento']);
@@ -14,14 +14,8 @@ $cliente->setSexo($_POST['Sexo']);
 
 $bllCliente = new \bll\bllCliente;
 
-$data = array();
+$data = $bllCliente->Update($cliente);
 
-$data = $bllCliente->Insert($cliente);
-
-$json = json_encode($data);
-
-header('Content-Type: application/json');
-
-echo $json;
+echo $data;
 
 ?>
