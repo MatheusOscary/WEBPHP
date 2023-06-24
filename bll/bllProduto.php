@@ -21,7 +21,7 @@ class bllProduto{
 
     public function Select(){
         $dal = new \dal\dalProduto;
-        $result[] = $dal->Select();
+        $result = $dal->Select();
         return $result;
     }
 
@@ -31,7 +31,7 @@ class bllProduto{
         return $result;
     }
 
-    public function Delete(\model\Produto $produto){
+    public function Delete($produto){
         $dal = new \dal\dalProduto;
         $result = $dal->Delete($produto);
         return $result;

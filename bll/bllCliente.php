@@ -21,13 +21,19 @@ class bllCliente{
 
     public function Select(){
         $dal = new \dal\dalCliente;
-        $result[] = $dal->Select();
+        $result = $dal->Select();
         return $result;
     }
 
     public function SelectConsumer($cliente){
         $dal = new \dal\dalCliente;
         $result = $dal->SelectConsumer($cliente);
+        return $result;
+    }
+
+    public function Delete($cliente){
+        $dal = new \dal\dalCliente;
+        $result = $dal->Delete($cliente);
         return $result;
     }
 }

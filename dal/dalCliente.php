@@ -70,7 +70,7 @@ class dalCliente{
         $con = Conexao::conectar(); 
         $result = $con->query($sql); 
         $con = Conexao::desconectar();
-
+        $lstCliente = [];
         foreach ($result as $linha){
             $cliente = new \MODEL\Cliente(); 
             
@@ -108,6 +108,19 @@ class dalCliente{
         $cliente->setData_nascimento(date_format($data, 'd-m-Y'));
     
         return $cliente;
+    }
+
+    public function Delete($ConsumerId){
+        $con = \dal\Conexao::conectar();
+
+        $sql = "DELETE FROM mpgconsumer WHERE ConsumerId=". $ConsumerId .";";
+
+        $stmt = $con->prepare($sql);
+        $result = $stmt->execute();
+
+        \dal\Conexao::desconectar();
+
+        return  $result; 
     }
 }
 

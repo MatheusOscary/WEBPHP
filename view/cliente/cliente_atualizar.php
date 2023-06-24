@@ -106,7 +106,7 @@
 			<div class="col-md-8 container dsp-flex flex-column justify-content-center">
 				<label class="form-label">Sexo</label>
 					<div class="form-check">
-						<input class="form-check-input" checked="checked" value="M" <?php  if ($cliente->getSexo() == "M") { echo 'checked="checked"'; } ?>  type="radio" name="Sexo" id="Sexo1">
+						<input class="form-check-input" value="M" <?php  if ($cliente->getSexo() == "M") { echo 'checked="checked"'; } ?>  type="radio" name="Sexo" id="Sexo1">
 						<label class="form-check-label" for="Sexo1">
 							Masculino
 						</label>

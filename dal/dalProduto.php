@@ -70,21 +70,23 @@
         $con = Conexao::conectar(); 
         $result = $con->query($sql); 
         $con = Conexao::desconectar();
+        $lstProduto = [];
+        if ($result != null){
+            foreach ($result as $linha){
+                $produto = new \MODEL\Produto(); 
+                
+                $produto->setId($linha['ProductsId']);
+                $produto->setNome($linha['Nome']);
+                $produto->setPreco_venda($linha['Preco_venda']);
+                $produto->setPreco_compra($linha['Preco_compra']);
+                $produto->setCod_barra($linha['Cod_barra']);
+                $produto->setEstoque($linha['Estoque']);
 
-        foreach ($result as $linha){
-            $produto = new \MODEL\Produto(); 
-            
-            $produto->setId($linha['ProductsId']);
-            $produto->setNome($linha['Nome']);
-            $produto->setPreco_venda($linha['Preco_venda']);
-            $produto->setPreco_compra($linha['Preco_compra']);
-            $produto->setCod_barra($linha['Cod_barra']);
-            $produto->setEstoque($linha['Estoque']);
-
-            $lstProduto[] = $produto; 
+                $lstProduto[] = $produto; 
+            }
         }
-        
         return $lstProduto; 
+        
     }
 
     public function SelectConsumer($ProductsId) {
