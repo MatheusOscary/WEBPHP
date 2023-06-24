@@ -19,13 +19,14 @@ class dalCliente{
         $sql = "CALL InsertConsumer(:Nome, :CPF_CNPJ, :RG_IE, :Tipo_pessoa, :Data_nascimento, :Sexo, :Insert_session, :UserId, @p_STATUS_CODE, @p_MESSAGE);";
         
         $stmt = $con->prepare($sql);
-        $token = HEX2BIN($_SESSION["Token"]);
         $stmt->bindParam(':CPF_CNPJ',$CPF_CNPJ);
         $stmt->bindParam(':Nome',$Nome);
         $stmt->bindParam(':RG_IE',$RG_IE);
         $stmt->bindParam(':Tipo_pessoa',$Tipo_pessoa);
         $stmt->bindParam(':Data_nascimento',$Data_nascimento);
         $stmt->bindParam(':Sexo',$Sexo);
+
+        $token = HEX2BIN($_SESSION["Token"]);
         $stmt->bindParam(':Insert_session', $token);
         $stmt->bindParam(':UserId', $_SESSION['UserId']);
 
@@ -52,8 +53,9 @@ class dalCliente{
         $Tipo_pessoa = $cliente->getTipo_pessoa();
         $Data_nascimento = $cliente->getData_nascimento();
         $Sexo = $cliente->getSexo();
+        $token = HEX2BIN($_SESSION["Token"]);
 
-        $sql = "UPDATE mpgConsumer SET Nome='". $Nome ."', RG_IE = '". $RG_IE ."', Tipo_pessoa = '". $Tipo_pessoa ."', Data_nascimento = '". $Data_nascimento ."', Sexo = '". $Sexo ."' WHERE ConsumerId = ". $id .";";
+        $sql = "UPDATE mpgConsumer SET Update_date=NOW(), Update_session='". $token ."' , Nome='". $Nome ."', RG_IE = '". $RG_IE ."', Tipo_pessoa = '". $Tipo_pessoa ."', Data_nascimento = '". $Data_nascimento ."', Sexo = '". $Sexo ."' WHERE ConsumerId = ". $id .";";
 
         $stmt = $con->prepare($sql);
         $result = $stmt->execute();
