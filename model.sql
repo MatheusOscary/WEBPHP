@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 24/06/2023 às 21:32
+-- Tempo de geração: 25/06/2023 às 20:54
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.2.4
 
@@ -25,6 +25,24 @@ DELIMITER $$
 --
 -- Procedimentos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DeleteProductSold` (IN `p_ProductsId` BIGINT, IN `p_SoldId` BIGINT, IN `Deleted_session` VARBINARY(128), OUT `STATUS_CODE` BIGINT, OUT `MESSAGE` VARCHAR(255))   DeleteProductSold:BEGIN
+	DECLARE v_Total DECIMAL(13,2);
+	
+	UPDATE mpgproducts INNER JOIN mpgproductsold ON mpgproducts.ProductsId = mpgproductsold.ProductsId SET Estoque = Estoque + mpgproductsold.Quantidade, mpgproducts.Update_date = NOW(), mpgproducts.Update_session = Deleted_session WHERE mpgproducts.ProductsId = p_ProductsId AND mpgproductsold.SoldId = p_SoldId;
+    DELETE FROM mpgproductsold WHERE mpgproductsold.ProductsId = p_ProductsId AND mpgproductsold.SoldId = p_SoldId;
+    
+    SET v_Total = (SELECT SUM(Preco) FROM mpgproductsold WHERE SoldId = p_SoldId);
+    UPDATE mpgsold SET Total = v_Total WHERE SoldId = p_SoldId;
+    SET STATUS_CODE = 200;
+    SET MESSAGE = 'Produto Deletado!';
+    
+    
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `FinalizeSold` (IN `p_SoldId` BIGINT, IN `p_Forma_pagto` INT, IN `Finalize_session` VARBINARY(128))   FinalizeSold:BEGIN
+	UPDATE mpgsold SET mpgsold.Estado = 'C', mpgsold.Forma_pagto = p_Forma_pagto, mpgsold.Update_session = Finalize_session, mpgsold.Update_date = NOW() WHERE mpgsold.SoldId = p_SoldId;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertConsumer` (IN `p_Nome` VARCHAR(120), IN `p_CPF_CNPJ` VARCHAR(14), IN `p_RG_IE` VARCHAR(14), IN `p_Tipo_pessoa` CHAR(1), IN `p_Data_nascimento` DATE, IN `p_Sexo` CHAR(4), IN `p_Insert_session` VARBINARY(128), IN `p_UserId` BIGINT, OUT `p_STATUS_CODE` BIGINT, OUT `p_MESSAGE` VARCHAR(255))   InsertConsumer:BEGIN
 	IF EXISTS(SELECT CPF_CNPJ FROM mpgconsumer WHERE CPF_CNPJ = p_CPF_CNPJ) THEN
     	SET p_STATUS_CODE = 409;
@@ -39,6 +57,20 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertConsumer` (IN `p_Nome` VARCHA
 	VALUES(p_Nome, p_CPF_CNPJ, p_RG_IE, p_Tipo_pessoa, p_Data_nascimento, p_Sexo, p_Insert_session, p_UserId); 
     SET p_STATUS_CODE = 200;
     SET p_MESSAGE = "Consumidor cadastrado com sucesso!";
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertConsumerSold` (IN `p_CPF_CNPJ` VARCHAR(14), IN `p_SoldId` BIGINT, IN `p_Insert_session` VARBINARY(128), OUT `STATUS_CODE` BIGINT, OUT `MESSAGE` VARCHAR(255))   InsertConsumerSold:BEGIN
+	DECLARE v_ConsumerId BIGINT;
+	IF NOT EXISTS(SELECT ConsumerId FROM mpgconsumer WHERE mpgconsumer.CPF_CNPJ = p_CPF_CNPJ) THEN
+        SET STATUS_CODE = 206;
+        SET MESSAGE = 'Cliente não encontrado!';
+        LEAVE InsertConsumerSold;
+    END IF;
+    
+    SET v_ConsumerId = (SELECT ConsumerId FROM mpgconsumer WHERE mpgconsumer.CPF_CNPJ = p_CPF_CNPJ);
+    UPDATE mpgsold SET mpgsold.ConsumerId = v_ConsumerId, mpgsold.Update_date = NOW(), mpgsold.Update_session = p_Insert_session WHERE mpgsold.SoldId = p_SoldId;
+    SET STATUS_CODE = 200;
+    SET MESSAGE = 'Cliente atualizado!';
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertProduct` (IN `p_Nome` VARCHAR(120), IN `p_Preco_venda` DECIMAL(13,2), IN `p_Preco_compra` DECIMAL(13,2), IN `p_Cod_barra` VARCHAR(13), IN `p_Estoque` DECIMAL(13,2), IN `p_Insert_session` VARBINARY(128), IN `p_UserId` BIGINT, OUT `STATUS_CODE` BIGINT, OUT `MESSAGE` VARCHAR(255))   InsertProduct:BEGIN
@@ -78,8 +110,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `InsertProductSold` (IN `p_Cod_barra
     	INSERT INTO mpgproductsold(Insert_date, Insert_session, Preco, Quantidade, ProductsId, SoldId)
         SELECT NOW(), p_Insert_session, Preco_venda * p_Quantidade, p_Quantidade, ProductsId, p_SoldId FROM mpgproducts WHERE Cod_barra = p_Cod_barra;
         
-        UPDATE mpgproducts SET estoque = estoque - p_Quantidade WHERE Cod_barra = p_Cod_barra;
     END IF;
+    UPDATE mpgproducts SET estoque = estoque - p_Quantidade WHERE Cod_barra = p_Cod_barra;
     SET v_Total = (SELECT SUM(Preco) FROM mpgproductsold WHERE SoldId = p_SoldId);
     UPDATE mpgsold SET Total = v_Total WHERE SoldId = p_SoldId;
     SET STATUS_CODE = 200;
@@ -161,7 +193,8 @@ CREATE TABLE `mpgconsumer` (
 --
 
 INSERT INTO `mpgconsumer` (`Nome`, `ConsumerId`, `UserId`, `CPF_CNPJ`, `RG_IE`, `Tipo_pessoa`, `Data_nascimento`, `Sexo`, `Insert_date`, `Insert_session`, `Update_date`, `Update_session`) VALUES
-('Consumidor', 1, 1, '0000000000000', '0000000000000', 'F', '2003-07-07', 'MNTC', '0000-00-00 00:00:00', 0x6619b9737ce956aed16a4b9aa0f0b19d28dbf0a691a059a8c1d2c06bdcb89f36, '2023-06-23 22:08:47', 0x6619b9737ce956aed16a4b9aa0f0b19d28dbf0a691a059a8c1d2c06bdcb89f36);
+('Consumidor', 1, 1, '0000000000000', '0000000000000', 'F', '2003-07-07', 'MNTC', '0000-00-00 00:00:00', 0x6619b9737ce956aed16a4b9aa0f0b19d28dbf0a691a059a8c1d2c06bdcb89f36, '2023-06-23 22:08:47', 0x6619b9737ce956aed16a4b9aa0f0b19d28dbf0a691a059a8c1d2c06bdcb89f36),
+('Matheus Oscar Ferreira de Souza', 6, 1, '49293172828', '18995522324565', 'F', '2003-07-07', 'MNTC', '0000-00-00 00:00:00', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -188,6 +221,7 @@ INSERT INTO `mpglogin` (`Token`, `UserId`, `Login_date`) VALUES
 (0x09a3371ccbd1d279cd189d3fb8b36d08a0baa9f2706457be3810b6346af41826, 1, '2023-06-18 11:42:42'),
 (0x09a3371ccbd1d279cd189d3fb8b36d08cacadd97ca916c9096dd11d288334639, 1, '2023-06-18 11:47:50'),
 (0x09a3371ccbd1d279cd189d3fb8b36d08f8dcd2562b82549f37750a17414301d9, 1, '2023-06-18 11:44:00'),
+(0x19cf7c3a66bfae4aa668af8203766adeb2a4149fccd43c3db8513aa023c8cfab, 8, '2023-06-25 15:50:03'),
 (0x2754877849feb2525677fb16fe2f1510749fce5d3e508272ef3ac1d0cd24a34e, 1, '2023-06-17 22:42:16'),
 (0x2754877849feb2525677fb16fe2f1510ab28934af8ee9424a8d55f64636fbf47, 1, '2023-06-17 22:43:05'),
 (0x35e83ec3f74e5bfe73611acd2b07ab39b59eaaeac0e55c393f4c0daca19124ec, 1, '2023-06-18 11:28:12'),
@@ -201,7 +235,10 @@ INSERT INTO `mpglogin` (`Token`, `UserId`, `Login_date`) VALUES
 (0xa433e69da21f3c1e560a0aafd164a14e4fbb2a6812e5c68ca28fa0b0d97fe9cf, 1, '2023-06-18 11:33:16'),
 (0xa433e69da21f3c1e560a0aafd164a14e567f4b966901379845b67dbed8999e3e, 1, '2023-06-18 11:38:53'),
 (0xa433e69da21f3c1e560a0aafd164a14ee0254ec37c97180ac765dd9d4da8bf29, 1, '2023-06-18 11:37:35'),
-(0xa433e69da21f3c1e560a0aafd164a14ef0460b2e012f38df31256b06cf3606c3, 1, '2023-06-18 11:30:04');
+(0xa433e69da21f3c1e560a0aafd164a14ef0460b2e012f38df31256b06cf3606c3, 1, '2023-06-18 11:30:04'),
+(0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, 1, '2023-06-25 09:46:29'),
+(0xa8b0b865dadfaced009cfef28aa4ee2e5a37c31b2c9ade243c6927cae5f741a0, 8, '2023-06-25 15:41:06'),
+(0xa8b0b865dadfaced009cfef28aa4ee2e8f602151340748e84e70e82143b17971, 8, '2023-06-25 15:41:10');
 
 -- --------------------------------------------------------
 
@@ -223,6 +260,15 @@ CREATE TABLE `mpgproducts` (
   `Update_session` varbinary(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `mpgproducts`
+--
+
+INSERT INTO `mpgproducts` (`ProductsId`, `UserId`, `Nome`, `Preco_venda`, `Preco_compra`, `Cod_barra`, `estoque`, `Insert_date`, `Insert_session`, `Update_date`, `Update_session`) VALUES
+(2, 1, 'Bolo', 50.00, 25.00, '1234567891011', 77.00, '2023-06-24 16:58:27', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-25 09:52:18', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e),
+(3, 1, 'Pão', 7.00, 1.00, '1234567891012', 46.00, '2023-06-24 17:07:41', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, NULL, NULL),
+(4, 1, 'Biscoito de polvilho', 5.00, 1.50, '5555555555555', 32.00, '2023-06-24 17:51:18', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-25 09:52:01', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e);
+
 -- --------------------------------------------------------
 
 --
@@ -240,6 +286,15 @@ CREATE TABLE `mpgproductsold` (
   `Update_session` varbinary(128) DEFAULT NULL,
   `SoldId` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `mpgproductsold`
+--
+
+INSERT INTO `mpgproductsold` (`ProductSoldId`, `ProductsId`, `Preco`, `Quantidade`, `Insert_date`, `Insert_session`, `Update_date`, `Update_session`, `SoldId`) VALUES
+(1, 2, 1000.00, 20.00, '2023-06-24 17:03:58', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-24 17:47:20', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, 4),
+(2, 3, 378.00, 54.00, '2023-06-24 17:08:50', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-24 17:47:46', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, 4),
+(5, 2, 250.00, 5.00, '2023-06-25 09:52:26', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -265,10 +320,13 @@ CREATE TABLE `mpgsold` (
 --
 
 INSERT INTO `mpgsold` (`SoldId`, `ConsumerId`, `UserId`, `Estado`, `Total`, `Forma_pagto`, `Insert_date`, `Insert_session`, `Update_date`, `Update_session`) VALUES
-(1, 1, 1, 'A', 0.00, 0, '2023-06-24 15:45:36', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, NULL, NULL),
+(1, 6, 1, 'C', 250.00, 1, '2023-06-24 15:45:36', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-25 10:50:42', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e),
 (2, 1, 1, 'A', 0.00, 0, '2023-06-24 15:46:08', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, NULL, NULL),
 (3, 1, 1, 'A', 0.00, 0, '2023-06-24 15:47:36', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, NULL, NULL),
-(4, 1, 1, 'A', 0.00, 0, '2023-06-24 15:50:10', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, NULL, NULL);
+(4, 1, 1, 'C', 1378.00, 0, '2023-06-24 15:50:10', 0x963f6d6124f437ae8d94a5155ee81543b6f2646fa3e96aed177cd80659b1941e, '2023-06-25 11:23:31', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e),
+(5, 1, 1, 'A', 0.00, 0, '2023-06-25 11:44:07', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, NULL, NULL),
+(6, 1, 1, 'A', 0.00, 0, '2023-06-25 12:45:18', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, NULL, NULL),
+(7, 1, 1, 'A', 0.00, 0, '2023-06-25 13:10:34', 0xa4c20e14fb1520a58b3eb4087d71c5eb4e82d51145b7049ebda8f91a92a3bc0e, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -356,19 +414,25 @@ ALTER TABLE `mpguser`
 -- AUTO_INCREMENT de tabela `mpgconsumer`
 --
 ALTER TABLE `mpgconsumer`
-  MODIFY `ConsumerId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ConsumerId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `mpgproducts`
 --
 ALTER TABLE `mpgproducts`
-  MODIFY `ProductsId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ProductsId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `mpgproductsold`
+--
+ALTER TABLE `mpgproductsold`
+  MODIFY `ProductSoldId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `mpgsold`
 --
 ALTER TABLE `mpgsold`
-  MODIFY `SoldId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `SoldId` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `mpguser`
