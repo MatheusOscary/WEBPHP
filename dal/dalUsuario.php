@@ -65,7 +65,7 @@ class dalUsuario{
         return array('STATUS_CODE' => $status_code, 'MESSAGE' => $message, 'ENTROU' => $teste);
     }
     public function SelectUser() {
-        session_start();
+        //session_start();
         $sql = "SELECT Username FROM mpguser WHERE UserId = ". $_SESSION['UserId'] .";";
         $con = Conexao::conectar();
         $stmt = $con->query($sql);
