@@ -16,7 +16,7 @@
 	<script>
         
         jQuery(function($){
-            $('#cadastrar').click(function(){
+            $(document).on('click', '#cadastrar',function(){
             event.preventDefault(); // Impede o comportamento padrão do botão de enviar
 
             var form = $('#Cadastrar_cliente')[0];

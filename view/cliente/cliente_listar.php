@@ -16,7 +16,7 @@
     <title>Clientes</title>
     <script>
         jQuery(function($){
-            $('.delete').click(function(){
+            $(document).on('click', '.delete',function(){
                 $.ajax({
                     method: 'POST',
                     url: 'cliente_deletar.php',

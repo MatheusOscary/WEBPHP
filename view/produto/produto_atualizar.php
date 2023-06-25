@@ -17,7 +17,7 @@
     <script>
         
         jQuery(function($){
-            $('#atualizar').click(function(){
+            $(document).on('click', '#atualizar',function(){
             event.preventDefault(); // Impede o comportamento padrão do botão de enviar
 
             var form = $('#atualizar_produto')[0];

@@ -16,7 +16,7 @@
     <title>Produto</title>
     <script>
         jQuery(function($){
-            $('.delete').click(function(){
+            $(document).on('click', '.delete',function(){
                 $.ajax({
                     method: 'POST',
                     url: 'produto_deletar.php',
