@@ -32,7 +32,11 @@
                                 text: 'Cliente atualizado.',
                                 icon: 'success',
                                 confirmButtonText: 'Confirmar'
-                            });
+                            }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = 'produto_listar.php'
+                        }
+                        })
                     }
                 });
             } else {

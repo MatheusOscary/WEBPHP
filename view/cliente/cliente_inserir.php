@@ -34,7 +34,11 @@
                                 text: message,
                                 icon: 'success',
                                 confirmButtonText: 'Confirmar'
-                            })
+                            }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = 'cliente_listar.php'
+                        }
+                        })
                         }else{
                             Swal.fire({
                                 title: 'Erro!',

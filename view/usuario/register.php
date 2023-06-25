@@ -34,7 +34,12 @@
                             text: message,
                             icon: 'success',
                             confirmButtonText: 'Confirmar'
+                        }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.href = 'login.php'
+                        }
                         })
+                                                
                     }else{
                         Swal.fire({
                             title: 'Erro!',

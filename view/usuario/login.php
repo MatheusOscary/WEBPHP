@@ -31,6 +31,10 @@
                                 text: message,
                                 icon: 'success',
                                 confirmButtonText: 'Confirmar'
+                            }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.href = '../menu/home.php'
+                            }
                             })
                         }else{
                             Swal.fire({
