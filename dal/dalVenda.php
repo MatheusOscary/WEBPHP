@@ -84,6 +84,144 @@ class dalVenda{
         return $lstvendaProduto; 
     }
 
+    public function DeleteProductSold(\model\VendaProduto $vendaProduto) {
+        session_start();
+        $con = \dal\Conexao::conectar();
+
+        $ProductsId=$vendaProduto->getId();
+        $SoldId=$vendaProduto->getSoldId();
+
+        $sql = "CALL DeleteProductSold(:ProductsId, :SoldId, :Deleted_session, @p_STATUS_CODE, @p_MESSAGE)";
+    
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindParam(':ProductsId',$ProductsId);
+        $stmt->bindParam(':SoldId',$SoldId);
+        $token = HEX2BIN($_SESSION["Token"]);
+        $stmt->bindParam(':Deleted_session', $token);
+
+        $stmt->execute();
+
+        $stmt->closeCursor();
+        $result = $con->query("SELECT @p_STATUS_CODE, @p_MESSAGE");
+        $row = $result->fetch(\PDO::FETCH_ASSOC);
+        $status_code = $row['@p_STATUS_CODE'];
+        $message = $row['@p_MESSAGE'];
+
+        \dal\Conexao::desconectar();
+
+        return array('STATUS_CODE' => $status_code, 'MESSAGE' => $message);
+    }
+
+    public function InsertConsumerSold($SoldId, $CPF_CNPJ) {
+        session_start();
+        $con = \dal\Conexao::conectar();
+
+
+        $sql = "CALL InsertConsumerSold(:CPF_CNPJ, :SoldId, :Insert_session, @p_STATUS_CODE, @p_MESSAGE)";
+    
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindParam(':CPF_CNPJ',$CPF_CNPJ);
+        $stmt->bindParam(':SoldId',$SoldId);
+        $token = HEX2BIN($_SESSION["Token"]);
+        $stmt->bindParam(':Insert_session', $token);
+
+        $stmt->execute();
+
+        $stmt->closeCursor();
+        $result = $con->query("SELECT @p_STATUS_CODE, @p_MESSAGE");
+        $row = $result->fetch(\PDO::FETCH_ASSOC);
+        $status_code = $row['@p_STATUS_CODE'];
+        $message = $row['@p_MESSAGE'];
+
+        \dal\Conexao::desconectar();
+
+        return array('STATUS_CODE' => $status_code, 'MESSAGE' => $message);
+    }
+    public function SelectSold($SoldId) {
+        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, mpgsold.Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.SoldId = ". $SoldId ." AND mpgsold.Estado = 'A';";
+        $con = Conexao::conectar();
+        $stmt = $con->query($sql);
+        $linha = $stmt->fetch(\PDO::FETCH_ASSOC);
+        Conexao::desconectar($con);
+    
+        $venda = new \MODEL\Venda();
+        
+        $venda->setId($linha['SoldId']);
+        $venda->setTotal($linha['Total']);
+        $venda->setEstado($linha['Estado']);
+        $venda->setConsumer($linha['Nome']);
+        $venda->setForma_pagto($linha['Forma_pagto']);
+    
+        return $venda;
+    }
+
+    public function FinalizeSold($SoldId, $Forma_pagto) {
+        session_start();
+        $con = \dal\Conexao::conectar();
+
+
+        $sql = "CALL FinalizeSold(:SoldId, :Forma_pagto, :Insert_session)";
+    
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindParam(':SoldId',$SoldId);
+        $stmt->bindParam(':Forma_pagto',$Forma_pagto);
+        $token = HEX2BIN($_SESSION["Token"]);
+        $stmt->bindParam(':Insert_session', $token);
+
+        $result = $stmt->execute();
+
+        $stmt->closeCursor();
+
+        \dal\Conexao::desconectar();
+
+        return  $result;
+    }
+    public function SelectSoldC() {
+        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'C';";
+        $con = Conexao::conectar();
+        $stmt = $con->query($sql);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        Conexao::desconectar($con);
+        
+        $lstvenda = [];
+        foreach ($result as $linha){
+        $venda = new \MODEL\Venda();
+        
+        $venda->setId($linha['SoldId']);
+        $venda->setTotal($linha['Total']);
+        $venda->setEstado($linha['Estado']);
+        $venda->setConsumer($linha['Nome']);
+        $venda->setForma_pagto($linha['Forma_pagto']);
+        $lstvenda[] = $venda;
+        }
+        return $lstvenda;
+    }
+    public function SelectSoldA() {
+        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'A';";
+        $con = Conexao::conectar();
+        $stmt = $con->query($sql);
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        Conexao::desconectar($con);
+        
+        $lstvenda = [];
+        foreach ($result as $linha){
+        $venda = new \MODEL\Venda();
+        
+        $venda->setId($linha['SoldId']);
+        $venda->setTotal($linha['Total']);
+        $venda->setEstado($linha['Estado']);
+        $venda->setConsumer($linha['Nome']);
+        $venda->setForma_pagto($linha['Forma_pagto']);
+        $lstvenda[] = $venda;
+        }
+        return $lstvenda;
+    }
 }
 
 ?>

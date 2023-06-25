@@ -6,8 +6,8 @@ class Venda {
     private ?int    $id;
     private ?float  $Total;
     private ?string $Estado;
-    private ?string    $Consumer;
-    private ?int    $Forma_pagto;
+    private ?string $Consumer;
+    private ?string    $Forma_pagto;
 
     public function getId(){
         return $this->id;
@@ -37,7 +37,7 @@ class Venda {
     public function setConsumer(string $Consumer){
         $this->Consumer = $Consumer;
     }
-    public function setForma_pagto(int $Forma_pagto){
+    public function setForma_pagto(string $Forma_pagto){
         $this->Forma_pagto = $Forma_pagto;
     }
     

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php 
         include_once '../include_padrao.php';
+        include_once "../../bll/bllVenda.php";
     ?>
     <style>
         .botoes{
@@ -48,9 +49,90 @@
                     }
                 })
             });
+            $(document).on('click', '.delete', function(){
+                $.ajax({
+                    method: 'POST',
+                    url: 'venda_produto_deletar.php',
+                    data: 'SoldId=<?php echo $_REQUEST['SoldId'];?>&ProductsId='+ $(this).attr('productsid'),
+                    success: function(data){
+                        var statusCode = data.STATUS_CODE;
+                        var message = data.MESSAGE;
+                        if (statusCode == 200){
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'Confirmar'
+                            });
+                            $.ajax({
+                                method: "GET",
+                                url: "venda_itens.php",
+                                data: "SoldId=<?php echo $_REQUEST['SoldId'];?>",
+                                success: function(resp){
+                                    $('#itens_venda').html(resp);
+                                }
+                            });
+                        }else{
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }
+                    }
+
+                });
+            });
+            $('#cliente').change(function(){
+                $.ajax({
+                    method: 'POST',
+                    url: 'venda_cliente_inserir.php',
+                    data: 'SoldId=<?php echo $_REQUEST['SoldId'];?>&CPF_CNPJ='+ $(this).val(),
+                    success: function(data){
+                        var statusCode = data.STATUS_CODE;
+                        var message = data.MESSAGE;
+                        if (statusCode == 200){
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: message,
+                                icon: 'success',
+                                confirmButtonText: 'Confirmar'
+                            });
+                            setTimeout(() => {
+                                location.reload();
+                            }, 2000);
+                            //location.reload();
+                        }else{
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Confirmar'
+                            })
+                        }
+                    }
+
+                });
+            });
+            $('#finalizar').click(function(){
+                $.ajax({
+                    method: 'POST',
+                    url: 'venda_finalizar.php',
+                    data: 'SoldId=<?php echo $_REQUEST['SoldId'];?>&Forma_pagto='+ $('#Forma_pagto').val(),
+                    success: function(data){
+                        window.location.href="venda_listar.php";
+                    }
+                });
+            });
         });
     </script>
 </head>
+<?php 
+    $bllVenda = new \bll\bllVenda;
+    $venda = $bllVenda->SelectSold($_REQUEST["SoldId"]);
+
+?>
 <body>
     <div class="card text-left">
         <div class="card-header text-bg-dark">
@@ -59,7 +141,7 @@
                     <label for="cliente" class="col-form-label">Cliente </label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" id="cliente" class="form-control">
+                    <input type="text" id="cliente" class="form-control" value="<?php echo $venda->getConsumer();?>">
                 </div>
                 <div class="col-md-3" align="right">
                     <label for="produto" class="col-form-label">Adicionar produto </label>
@@ -93,7 +175,7 @@
                     </select>                    
                 </div>
                 <div class="col-auto text-center">
-                    <button type="button" class="btn btn-success">Finalizar</button>
+                    <button type="button" id="finalizar" class="btn btn-success">Finalizar</button>
                 </div>
             </div>
         </div>

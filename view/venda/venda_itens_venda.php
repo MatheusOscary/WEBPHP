@@ -20,14 +20,12 @@
 ?>
 <body>
     <table class="table table-dark">
-        <thead class="thead-dark">
+        <thead class="thead-light">
             <tr>
-            <th scope="col">ID</th>
             <th scope="col">Código de barras</th>
             <th scope="col">Nome</th>
             <th scope="col">Quantidade</th>
             <th scope="col">Preço</th>
-            <th scope="col">Deletar</th>
             </tr>
         </thead>
         <tbody>
@@ -35,16 +33,10 @@
                 if ($vendaProdutos != null)
                 foreach ($vendaProdutos as $vendaProduto){ ?>
                     <tr>
-                        <th scope="row"><?php echo $vendaProduto->getId(); ?></th>
-                        <td><?php echo $vendaProduto->getCod_barra(); ?></td>
+                        <td scope="row"><?php echo $vendaProduto->getCod_barra(); ?></td>
                         <td><?php echo $vendaProduto->getNome(); ?></td>
                         <td><?php echo $vendaProduto->getQuantidade(); ?></td>
                         <td>R$ <?php echo $vendaProduto->getPreco(); ?></td>
-                        <td>
-                            <a class="delete" href="javascript:" ProductsId="<?php echo $vendaProduto->getId(); ?>">
-                                <i class="fa-solid fa-trash fa-lg"  style="color: #ff0000;"></i>
-                            </a>
-                        </td>
                     </tr>
                 <?php }; ?>
         </tbody>
