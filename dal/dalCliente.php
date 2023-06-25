@@ -7,7 +7,7 @@ include_once "../../model/Cliente.php";
 class dalCliente{
     public function Insert(\model\Cliente $cliente) {
         $con = \dal\Conexao::conectar();
-
+        session_start();
         $CPF_CNPJ = $cliente->getCPF_CNPJ();
         $Nome = $cliente->getNome();
         $RG_IE = $cliente->getRG_IE();
