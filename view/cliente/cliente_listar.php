@@ -34,6 +34,10 @@
     $clientes = $bllCliente->Select();
 ?>
 <body>
+<?php 
+        include_once '../menu/menu.php';
+    ?>
+    <h2 class="text-light bg-dark text-center">Clientes</h2>
     <div class="container dsp-flex justify-content-center">
         <table class="table table-dark">
             <thead class="thead-dark">

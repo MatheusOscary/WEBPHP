@@ -7,3 +7,11 @@
 <link href="../../public/fontawesome-free-6.3.0-web/css/brands.css" rel="stylesheet">
 <link href="../../public/fontawesome-free-6.3.0-web/css/solid.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+session_start();
+
+if (!isset($_SESSION['Token']) && basename($_SERVER['PHP_SELF']) != 'login.php' && basename($_SERVER['PHP_SELF']) != 'register.php') {
+    header("Location: /WEBPHP/view/usuario/login.php");
+    exit;
+}
+?>

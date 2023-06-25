@@ -56,6 +56,9 @@
     </script>
 </head>
 <body>
+<?php 
+        include_once '../menu/menu.php';
+    ?>
     <div class="dsp-flex justify-content-center">
         <form action="" class="col-md-12 needs-validation" id="Cadastrar_cliente" method="post" novalidate>
             <div class="container shadow pb-2">

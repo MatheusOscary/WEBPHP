@@ -65,8 +65,9 @@
                 <label for="Pass" class="form-label">Senha</label>
                 <input type="password" class="form-control" name="Pass" id="Pass">
             </div>
-            <div class="botoes dsp-flex justify-content-end col-md-12">
-                <a id="entrar" class="btn btn-large btn-primary" align="right">Entrar <i class="fa-solid fa-forward fa-beat"></i></a>
+            <div class="botoes dsp-flex justify-content-between col-md-12">
+                <a id="cadastro" href="register.php"  class="btn btn-large btn-primary" align="right"><i class="fa-solid fa-forward fa-rotate-180"></i> Cadastrar</a>
+                <a id="entrar" href="javascript:" class="btn btn-large btn-primary" align="right">Entrar <i class="fa-solid fa-forward"></i></a>
             </div>
         </form>
     </div>

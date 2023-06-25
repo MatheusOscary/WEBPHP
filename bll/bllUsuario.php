@@ -19,6 +19,11 @@ class bllUsuario{
         $result = $dal->Login($usuario);
         return $result;
     }
+    public function SelectUser(){
+        $dal = new \dal\dalUsuario;
+        $result = $dal->SelectUser();
+        return $result;
+    }
 }
 
 ?>

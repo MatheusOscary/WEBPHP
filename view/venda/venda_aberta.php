@@ -13,18 +13,17 @@
             margin-top: 5%;
         }
     </style>
-    <title>Vendas Concluídas</title>
-    <script>
-        jQuery(function($){
-            
-        });
-    </script>
+    <title>Vendas Abertas</title>
 </head>
 <?php 
     $bllVenda = new \bll\bllVenda;
     $vendas = $bllVenda->SelectSoldA();
 ?>
 <body>
+    <?php 
+        include_once '../menu/menu.php';
+    ?>
+    <h2 class="text-light bg-dark text-center">Vendas Abertas</h2>
     <div class="container dsp-flex justify-content-center">
         <table class="table table-black">
             <thead class="thead-black">

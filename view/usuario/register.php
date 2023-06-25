@@ -83,8 +83,9 @@
                    Email inválido.
                 </div>
             </div>
-            <div class="botoes dsp-flex justify-content-end col-md-12">
-                <a id="pronto" class="btn btn-large btn-primary" align="right">Pronto <i class="fa-solid fa-forward fa-beat"></i></a>
+            <div class="botoes dsp-flex justify-content-between col-md-12">
+            <a id="login" href="login.php"  class="btn btn-large btn-primary" align="right"><i class="fa-solid fa-forward fa-rotate-180"></i> Login</a>
+                <a id="pronto" class="btn btn-large btn-primary" align="right">Pronto <i class="fa-solid fa-forward"></i></a>
             </div>
         </form>
     </div>

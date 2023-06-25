@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php 
-        include_once '../include_padrao.php';
         include_once "../../bll/bllVenda.php";
     ?>
     <style>
