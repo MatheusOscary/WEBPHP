@@ -3,12 +3,13 @@
 
     include_once "conection.php";
     include_once "../../model/Produto.php";
-    session_start();
+    
 
     class dalProduto{
         
         public function Insert(\model\Produto $produto) {
             $con = \dal\Conexao::conectar();
+            session_start();
             /*$id = $produto->getId();*/
             $Nome = $produto->getNome();
             $Preco_venda = $produto->getPreco_venda();
@@ -45,6 +46,7 @@
     }
 
     public function Update(\model\Produto $produto) {
+        session_start();
         $con = \dal\Conexao::conectar();
 
         $id = $produto->getId();
