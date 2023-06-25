@@ -45,7 +45,7 @@
                         <td><?php echo $venda->getConsumer(); ?></td>
                         <td><?php echo $venda->getTotal(); ?></td>
                         <td><?php echo $venda->getForma_pagto(); ?></td>
-                        <td><a href="venda.php?SoldId=<?php echo $venda->getId(); ?>"><i class="fa-solid fa-pencil fa-lg" style="color: #00a33f;"></i></a></td>
+                        <td><a href="http://localhost/WEBPHP/view/venda/venda.php?SoldId=<?php echo $venda->getId(); ?>"><i class="fa-solid fa-pencil fa-lg" style="color: #00a33f;"></i></a></td>
                     </tr>
                     <tr>
                         <td colspan="5">

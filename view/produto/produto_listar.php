@@ -22,7 +22,7 @@
                     url: 'produto_deletar.php',
                     data: 'ProductsId=' + $(this).attr('ProductsId'),
                     success: function(data){
-                        window.reload();
+                        location.reload();
                     }
                 });
             });

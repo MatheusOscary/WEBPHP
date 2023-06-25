@@ -22,7 +22,7 @@
                     url: 'cliente_deletar.php',
                     data: 'ConsumerId=' + $(this).attr('ConsumerId'),
                     success: function(data){
-                        window.reload();
+                        location.reload();
                     }
                 });
             });
