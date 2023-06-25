@@ -183,7 +183,7 @@ class dalVenda{
         return  $result;
     }
     public function SelectSoldC() {
-        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'C';";
+        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'C' AND mpgsold.UserId=". $_SESSION['UserId'] .";";
         $con = Conexao::conectar();
         $stmt = $con->query($sql);
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -203,7 +203,8 @@ class dalVenda{
         return $lstvenda;
     }
     public function SelectSoldA() {
-        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'A';";
+        session_start();
+        $sql = "SELECT mpgsold.SoldId, mpgsold.Total, mpgsold.Estado, IF(mpgsold.Forma_pagto = 1, 'Pix', 'Dinheiro') AS Forma_pagto, mpgconsumer.Nome  FROM mpgsold INNER JOIN mpgconsumer ON mpgsold.ConsumerId = mpgconsumer.ConsumerId WHERE mpgsold.Estado = 'A' AND mpgsold.UserId=". $_SESSION['UserId'] .";";
         $con = Conexao::conectar();
         $stmt = $con->query($sql);
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
