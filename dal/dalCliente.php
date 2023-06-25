@@ -4,7 +4,6 @@ namespace dal;
 
 include_once "conection.php";
 include_once "../../model/Cliente.php";
-session_start();
 class dalCliente{
     public function Insert(\model\Cliente $cliente) {
         $con = \dal\Conexao::conectar();
