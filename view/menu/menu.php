@@ -22,7 +22,7 @@
 
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <a class="navbar-brand" style="margin-left: 1%;" href="home.php"><img src="../../public/Logo.png" class="rounded" alt="" width="150px"></a>
+    <a class="navbar-brand" style="margin-left: 1%;" href="http://localhost/WEBPHP/view/menu/home.php"><img src="../../public/Logo.png" class="rounded" alt="" width="150px"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
