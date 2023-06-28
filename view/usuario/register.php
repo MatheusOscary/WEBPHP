@@ -71,14 +71,14 @@
                 <label for="User" class="form-label">Nome de usuário</label>
                 <input type="text" class="form-control" name="User" id="User"  maxlength="32" required>
                 <div class="invalid-feedback">
-                    Nome de usuário não pode estar vazio.
+                    O nome de usuário não pode estar vazio.
                 </div>
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
                 <label for="Pass" class="form-label">Senha</label>
                 <input type="password" class="form-control" name="Pass" id="Pass" minlength="8" maxlength="32" required>
                 <div class="invalid-feedback">
-                   Senha precisa ter mais de 8 caracteres.
+                   A senha precisa ter mais de 8 caracteres.
                 </div>
             </div>
             <div class="col-md-8 container dsp-flex flex-column justify-content-center">
