@@ -93,7 +93,7 @@
                 <label for="Cod_barra" class="form-label">Código de Barras</label>
                 <input type="text" disabled="disabled" class="form-control" name="Cod_barra" id="Cod_barra" placeholder="00000000000"  value="<?php echo $bllProduto->getCod_barra();?>"  maxlength="13" required>
                 <div class="invalid-feedback">
-                   Codigo de barra inválido.
+                   O código de barra está inválido.
                 </div>
             </div>
               <!-- ESTOQUE -->
@@ -101,7 +101,7 @@
                 <label for="Estoque" class="form-label">Estoque</label>
                 <input type="number" class="form-control" name="Estoque" id="Estoque"  value="<?php echo $bllProduto->getEstoque();?>" required>
                 <div class="invalid-feedback">
-                   Estoque não pode estar vazio.
+                   o estoque não pode estar vazio.
                 </div>
             </div>
 
