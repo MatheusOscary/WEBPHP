@@ -15,6 +15,9 @@
     <title>Venda</title>
     <script>
         jQuery(function($){
+            $('#cliente').click(function(){
+                $(this).val('');
+            })
             $('#Add').click(function(){
                 $.ajax({
                     method: "POST",
