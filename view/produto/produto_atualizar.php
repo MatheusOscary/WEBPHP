@@ -29,7 +29,7 @@
                     success : function(data){
                             Swal.fire({
                                 title: 'Sucesso!',
-                                text: 'Cliente atualizado.',
+                                text: 'Produto atualizado.',
                                 icon: 'success',
                                 confirmButtonText: 'Confirmar'
                             }).then((result) => {
